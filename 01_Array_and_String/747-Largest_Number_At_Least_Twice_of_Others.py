@@ -7,14 +7,15 @@ Determine whether the largest element in the array is at least twice as much as 
 class Solution:
     def dominantIndex(self, nums: List[int]) -> int:
         if len(nums) == 1: return 0
-        ans, tmpMax = 0, nums[0]
+        largest = [0, nums[0]]
+        second_largest = [-1, -1]
 
-        for i, x in enumerate(nums):
-            if x >= tmpMax*2:
-                ans, tmpMax = i, x
-
-        nums.sort()
-        if tmpMax == nums[-1] and tmpMax >= nums[-2]*2:
-            return ans
-        else:
-            return -1
+        for i, num in enumerate(nums):
+            if num > largest[1]:
+                second_largest = largest
+                largest = [i, num]
+            elif num > second_largest[1] and num < largest[1]:
+                second_largest = [i, num]
+        
+        if largest[1] >= second_largest[1]*2: return largest[0]
+        else: return -1
